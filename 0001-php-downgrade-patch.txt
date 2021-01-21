@@ -24,6 +24,15 @@ index 55713ac3..73f9e38f 100644
      },
      "platform-dev": [],
      "plugin-api-version": "2.0.0"
+diff --git a/config/sync/system.site.yml b/config/sync/system.site.yml
+index cb61b27e..bd4984c0 100644
+--- a/config/sync/system.site.yml
++++ b/config/sync/system.site.yml
+@@ -1,3 +1,4 @@
++uuid: 07393f3a-1e7c-46f0-824e-bdef6c299b02
+ name: 'ASU Library'
+ mail: repository@asu.edu
+ slogan: KEEP
 diff --git a/scripts/composer/ScriptHandler.php b/scripts/composer/ScriptHandler.php
 index a75e4d34..a2ebe409 100644
 --- a/scripts/composer/ScriptHandler.php
