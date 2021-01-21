@@ -1,0 +1,54 @@
+diff --git a/composer.json b/composer.json
+index 15c42121..4dac5e9b 100755
+--- a/composer.json
++++ b/composer.json
+@@ -21,7 +21,7 @@
+ 	}
+     ],
+     "require": {
+-        "php": "^7.4",
++        "php": "^7.3",
+         "bower-asset/jquery-ui-slider-pips": "^1.11",
+         "composer/installers": "^1.2",
+         "cweagans/composer-patches": "^1.6.5",
+diff --git a/composer.lock b/composer.lock
+index 55713ac3..73f9e38f 100644
+--- a/composer.lock
++++ b/composer.lock
+@@ -20540,7 +20540,7 @@
+     "prefer-stable": true,
+     "prefer-lowest": false,
+     "platform": {
+-        "php": "^7.4"
++        "php": "^7.3"
+     },
+     "platform-dev": [],
+     "plugin-api-version": "2.0.0"
+diff --git a/scripts/composer/ScriptHandler.php b/scripts/composer/ScriptHandler.php
+index a75e4d34..a2ebe409 100644
+--- a/scripts/composer/ScriptHandler.php
++++ b/scripts/composer/ScriptHandler.php
+@@ -9,6 +9,7 @@
+ 
+ use Composer\Script\Event;
+ use Composer\Semver\Comparator;
++use Drupal\Core\Site\Settings;
+ use DrupalFinder\DrupalFinder;
+ use Symfony\Component\Filesystem\Filesystem;
+ use Webmozart\PathUtil\Path;
+@@ -40,11 +41,10 @@ public static function createRequiredFiles(Event $event) {
+       $fs->copy($drupalRoot . '/sites/default/default.settings.php', $drupalRoot . '/sites/default/settings.php');
+       require_once $drupalRoot . '/core/includes/bootstrap.inc';
+       require_once $drupalRoot . '/core/includes/install.inc';
+-      $settings['config_directories'] = [
+-        CONFIG_SYNC_DIRECTORY => (object) [
+-          'value' => Path::makeRelative($drupalFinder->getComposerRoot() . '/config/sync', $drupalRoot),
+-          'required' => TRUE,
+-        ],
++      new Settings([]);
++      $settings['settings']['config_sync_directory'] = (object) [
++        'value' => Path::makeRelative($drupalFinder->getComposerRoot() . '/config/sync', $drupalRoot),
++        'required' => TRUE,
+       ];
+       drupal_rewrite_settings($settings, $drupalRoot . '/sites/default/settings.php');
+       $fs->chmod($drupalRoot . '/sites/default/settings.php', 0666);

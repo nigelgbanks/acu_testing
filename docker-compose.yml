@@ -1,0 +1,47 @@
+version: '3.7'
+volumes:
+  mariadb-data:
+  drupal-files:
+services:
+  drupal:
+    build: .
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.drupal_http.service: drupal
+      traefik.http.routers.drupal_http.entrypoints: http
+      traefik.http.routers.drupal_http.rule: Host(`acu.traefik.me`)
+      traefik.http.services.drupal.loadbalancer.server.port: '80'
+    environment:
+      DRUPAL_DEFAULT_CONFIGDIR: /var/www/drupal/config/sync
+      DRUPAL_DEFAULT_INSTALL_EXISTING_CONFIG: "true"
+    volumes:
+      - drupal-files:/var/www/drupal/web/files:rw
+  mariadb:
+    image: local/mariadb:latest
+    volumes:
+      - mariadb-data:/var/lib/mysql:rw
+  traefik:
+    command: >
+      --api.insecure=true
+      --api.dashboard=true
+      --api.debug=true
+      --entryPoints.http.address=:80
+      --providers.docker
+      --providers.docker.network=default
+      --providers.docker.exposedByDefault=false
+      '--providers.docker.defaultRule=Host(`{{index .Labels "com.docker.compose.service" }}.traefik.me`)'
+    container_name: traefik
+    image: traefik:2.2.1
+    labels:
+      traefik.http.routers.api.service: api@internal
+    networks:
+      default:
+        aliases:
+          - acu.traefik.me
+    ports:
+      - published: 80
+        target: 80
+      - published: 8080
+        target: 8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:rw
