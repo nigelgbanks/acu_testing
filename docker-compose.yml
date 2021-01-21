@@ -54,7 +54,6 @@ services:
       - published: 8080
         target: 8080
     volumes:
-      - ./fullchain.pem:/etc/ssl/traefik/fullchain.pem:ro
-      - ./privkey.pem:/etc/ssl/traefik/privkey.pem:ro
+      - ./certs:/etc/ssl/traefik:rw
       - ./tls.yml:/etc/traefik/tls.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:rw
