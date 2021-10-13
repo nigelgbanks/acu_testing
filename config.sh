@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source /etc/islandora/utilities.sh
+
 set_site_uuid DEFAULT "07393f3a-1e7c-46f0-824e-bdef6c299b02"
 # No idea why this is required but cannot import otherwise.
 # Probably a dependency issue.

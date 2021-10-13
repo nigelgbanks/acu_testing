@@ -6,8 +6,8 @@ git apply ../0001-php-downgrade-patch.txt
 popd
 mkdir certs > /dev/null
 pushd certs
-wget "http://traefik.me/fullchain.pem"
-wget "http://traefik.me/privkey.pem"
+wget -N -P fullchain.pem "http://traefik.me/fullchain.pem"
+wget -N -P privkey.pem "http://traefik.me/privkey.pem"
 popd
 export DOCKER_BUILDKIT=1 
 export COMPOSE_DOCKER_CLI_BUILD=1
